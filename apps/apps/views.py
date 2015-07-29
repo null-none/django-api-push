@@ -13,16 +13,6 @@ class AddIosDeviceView(APIView):
     device -- Device parameter (format string)
     """
 
-    def get(self, request, format=None):
-        if request.GET.get('device', None):
-            device = APNSDevice.objects.filter(registration_id=request.GET['device'])
-            if not device:
-                APNSDevice.objects.create(registration_id=request.GET['device'])
-            result = {"result": "ok"}
-        else:
-            result = {"result": "error", 'type': 'invalid format device'}
-        return HttpResponse(json.dumps(result), mimetype='application/json')
-
     def post(self, request, format=None):
         if request.POST.get('device', None):
             device = APNSDevice.objects.filter(registration_id=request.POST['device'])
@@ -39,16 +29,6 @@ class AddAndroidDeviceView(APIView):
     Add Android device.
     device -- Device parameter (format text)
     """
-
-    def get(self, request, format=None):
-        if request.GET.get('device', None):
-            device = GCMDevice.objects.filter(registration_id=request.GET['device'])
-            if not device:
-                GCMDevice.objects.create(registration_id=str(request.GET['device']))
-            result = {"result": "ok"}
-        else:
-            result = {"result": "error", 'type': 'invalid format device'}
-        return HttpResponse(json.dumps(result), mimetype='application/json')
 
     def post(self, request, format=None):
         if request.POST.get('device', None):
