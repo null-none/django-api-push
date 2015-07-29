@@ -2,10 +2,10 @@ from django.http import HttpResponse
 from push_notifications.models import APNSDevice, GCMDevice
 from rest_framework.views import APIView
 
-
 import json
 
 from .models import *
+from .serializers import *
 
 
 class AddIosDeviceView(APIView):
@@ -42,20 +42,31 @@ class AddAndroidDeviceView(APIView):
         return HttpResponse(json.dumps(result), mimetype='application/json')
 
 
-class PushView(APIView):
+class PushAndroidView(APIView):
     """
-    Push notification on device
+    Push notification on device android
+    """
+    def get(self, request, format=None):
+        for item in GCMDevice.objects.all():
+            try:
+                item.send_message("Please update app")
+            except Exception, e:
+                result = {"result": str(e)}
+                return HttpResponse(json.dumps(result), mimetype='application/json')
+        result = {"result": "ok"}
+        return HttpResponse(json.dumps(result), mimetype='application/json')
+
+
+class PushIosView(APIView):
+    """
+    Push notification on device iOS
     """
     def get(self, request, format=None):
         for item in APNSDevice.objects.all():
             try:
                 item.send_message("Please update app")
             except Exception, e:
-                pass
-        for item in GCMDevice.objects.all():
-            try:
-                item.send_message("Please update app")
-            except Exception, e:
-                pass
+                result = {"result": str(e)}
+                return HttpResponse(json.dumps(result), mimetype='application/json')
         result = {"result": "ok"}
         return HttpResponse(json.dumps(result), mimetype='application/json')

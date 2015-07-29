@@ -1,4 +1,8 @@
+INSTALLED_APPS = (
+        "push_notifications"
+)
+
 PUSH_NOTIFICATIONS_SETTINGS = {
-        "APNS_CERTIFICATE": "{0}/BMPushCertificateDev.pem".format(PROJECT_DIR),
-        "APNS_CERTIFICATE": "AIzaSyD-YGJDBBYIR_uj0BqB5yxRsH_rDxqtNcI",
+        "GCM_API_KEY": "<your api key>",
+        "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
 }
