@@ -7,18 +7,17 @@ import json
 from .models import *
 from .serializers import *
 
-
 class AddIosDeviceView(APIView):
     """
     Add iOS device.
     device -- Device parameter (format string)
     """
 
-    def get(self, request, format=None):
-        if request.GET.get('device', None):
-            device = APNSDevice.objects.filter(registration_id=request.GET['device'])
+    def post(self, request, format=None):
+        if request.POST.get('device', None):
+            device = APNSDevice.objects.filter(registration_id=request.POST['device'])
             if not device:
-                APNSDevice.objects.create(registration_id=request.GET['device'])
+                APNSDevice.objects.create(registration_id=request.POST['device'])
             result = {"result": "ok"}
         else:
             result = {"result": "error", 'type': 'invalid format device'}
@@ -31,11 +30,11 @@ class AddAndroidDeviceView(APIView):
     device -- Device parameter (format text)
     """
 
-    def get(self, request, format=None):
-        if request.GET.get('device', None):
-            device = GCMDevice.objects.filter(registration_id=request.GET['device'])
+    def post(self, request, format=None):
+        if request.POST.get('device', None):
+            device = GCMDevice.objects.filter(registration_id=request.POST['device'])
             if not device:
-                GCMDevice.objects.create(registration_id=str(request.GET['device']))
+                GCMDevice.objects.create(registration_id=str(request.POST['device']))
             result = {"result": "ok"}
         else:
             result = {"result": "error", 'type': 'invalid format device'}
