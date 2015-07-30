@@ -46,7 +46,7 @@ class PushAndroidView(APIView):
     Push notification on device android
     """
     def get(self, request, format=None):
-        for item in GCMDevice.objects.all():
+        for item in GCMDevice.objects.filter(active=True):
             try:
                 item.send_message("Please update app")
             except Exception, e:
@@ -61,7 +61,7 @@ class PushIosView(APIView):
     Push notification on device iOS
     """
     def get(self, request, format=None):
-        for item in APNSDevice.objects.all():
+        for item in APNSDevice.objects.filter(active=True):
             try:
                 item.send_message("Please update app")
             except Exception, e:
@@ -69,3 +69,20 @@ class PushIosView(APIView):
                 return HttpResponse(json.dumps(result), mimetype='application/json')
         result = {"result": "ok"}
         return HttpResponse(json.dumps(result), mimetype='application/json')
+
+class PushAllView(APIView):
+    """
+    Push notification on all active device
+    """
+    def get(self, request, format=None):
+        for item in APNSDevice.objects.filter(active=True):
+            try:
+                item.send_message("Please update app")
+            except Exception, e:
+                pass
+        for item in GCMDevice.objects.filter(active=True):
+            try:
+                item.send_message("Please update app")
+            except Exception, e:
+                pass
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))

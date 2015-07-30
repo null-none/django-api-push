@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-from .views import AddIosDeviceView, AddAndroidDeviceView, PushAndroidView, PushIosView
+from .views import AddIosDeviceView, AddAndroidDeviceView, PushAndroidView, PushIosView, PushAllView
 
 
 urlpatterns = patterns('',
@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     url(r'^add/device/android/', AddAndroidDeviceView.as_view(),  name='add_device_android'),
     url(r'^push/ios/', PushIosView.as_view(),  name='push_ios'),
     url(r'^push/android/', PushAndroidView.as_view(),  name='push_android'),
+    url(r'^push/all/', PushAllView.as_view(),  name='push_all'),
 )
 
